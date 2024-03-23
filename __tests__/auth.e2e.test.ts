@@ -32,8 +32,8 @@ describe('/auth',()=>{
         expect(res.body.email).toEqual(emailNewUser)
     })
 
-
-let jwtToken=''
+let refreshToken:string;
+let jwtToken:string=''
     it("input correct login and password and sign in (ok)",async ()=>{
         const res =await req
             .post('/auth/login')
@@ -42,6 +42,11 @@ let jwtToken=''
             .expect(STATUS_CODE.SUCCESS_200)
 
             console.log(res.body.accessToken)
+                //console.log(res.headers['set-cookie']);
+
+        const allCookies = res.headers['set-cookie'];
+         refreshToken = allCookies[0].split(';')[0].split('=')[1];
+        console.log(refreshToken);
 
         jwtToken=res.body.accessToken
 
@@ -55,6 +60,17 @@ let jwtToken=''
             .get('/auth/me')
             .set('Authorization', `Bearer ${jwtToken}`)
             .expect(STATUS_CODE.SUCCESS_200)
+
+    })
+
+
+
+    it("should return two token (accessToken and refreshToken",async ()=>{
+        const res =await req
+            .post('/auth/refresh-token')
+            .set('Cookie', `refreshToken=${refreshToken}`)
+            .expect(STATUS_CODE.SUCCESS_200)
+        console.log(res.body)
 
     })
 

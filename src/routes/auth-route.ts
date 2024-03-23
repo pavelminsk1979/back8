@@ -51,6 +51,14 @@ authRoute.post('/login', postValidationAuth(), errorValidationBlogs, async (req:
 })
 
 
+authRoute.post('/refresh-token',(req: any, res: any) => {
+
+        const answer = req.cookies.refreshToken
+        res.status(STATUS_CODE.SUCCESS_200).send({"key":answer})
+
+    }),
+
+
 authRoute.get('/me', authTokenMiddleware, async (req: any, res: Response) => {
     try {
 
