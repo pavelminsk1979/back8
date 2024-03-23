@@ -42,6 +42,7 @@ let jwtToken=''
             .expect(STATUS_CODE.SUCCESS_200)
 
             console.log(res.body.accessToken)
+
         jwtToken=res.body.accessToken
 
         expect(res.body.accessToken).toBeTruthy()

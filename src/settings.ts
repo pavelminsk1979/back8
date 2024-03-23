@@ -8,12 +8,15 @@ import {STATUS_CODE} from "./common/constant-status-code";
 import {usersRoute} from "./routes/users-route";
 import {authRoute} from "./routes/auth-route";
 import {commentsRoute} from "./routes/comments-route";
+import cookieParser from "cookie-parser";
 
 
 export const app = express()
 
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 app.use('/videos', videosRoute)
 app.use('/blogs', blogsRoute)

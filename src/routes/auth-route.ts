@@ -32,9 +32,12 @@ authRoute.post('/login', postValidationAuth(), errorValidationBlogs, async (req:
 
         if (idUser) {
 
-            const token = await tokenJwtServise.createTokenJwt(idUser)
-            const answer = {"accessToken": token}
+            const accessToken = await tokenJwtServise.createAccessTokenJwt(idUser)
+            const answer = {"accessToken": accessToken}
 
+            const refreshToken=await tokenJwtServise.createRefreshTokenJwt(idUser)
+
+            res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true,})
             res.status(STATUS_CODE.SUCCESS_200).send(answer)
 
         } else {
@@ -43,6 +46,7 @@ authRoute.post('/login', postValidationAuth(), errorValidationBlogs, async (req:
 
     } catch (error) {
         console.log('auth-routes.ts /login' + error)
+        res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
     }
 })
 
