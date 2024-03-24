@@ -41,12 +41,12 @@ let jwtToken:string=''
                 password: passwordNewUser})
             .expect(STATUS_CODE.SUCCESS_200)
 
-            console.log(res.body.accessToken)
+            //console.log(res.body.accessToken)
                 //console.log(res.headers['set-cookie']);
 
         const allCookies = res.headers['set-cookie'];
          refreshToken = allCookies[0].split(';')[0].split('=')[1];
-        console.log(refreshToken);
+        //console.log(refreshToken);
 
         jwtToken=res.body.accessToken
 
@@ -71,6 +71,8 @@ let jwtToken:string=''
             .set('Cookie', `refreshToken=${refreshToken}`)
             .expect(STATUS_CODE.SUCCESS_200)
         console.log(res.body)
+        console.log(res.headers['set-cookie']);
+
 
     })
 

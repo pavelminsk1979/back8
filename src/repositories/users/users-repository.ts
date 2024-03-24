@@ -1,5 +1,5 @@
 import { usersCollection} from "../../db/mongoDb";
-import {User} from "../../allTypes/userTypes";
+import { User} from "../../allTypes/userTypes";
 import {ObjectId} from "mongodb";
 
 
@@ -44,6 +44,22 @@ export const usersRepository={
         const result = await usersCollection.updateOne({email}, {
             $set: {"emailConfirmation.confirmationCode":newCode,"emailConfirmation.expirationDate":newDate}
         })
+
+        return !!result.matchedCount
+    },
+
+
+    async findUserWithAllPropetiesById(id: string) {
+        const user = await usersCollection.findOne({_id: new ObjectId(id)})
+        if (!user) return null
+
+        return user
+    },
+
+    async updateBlackListRefreshTokenForUser(email:string,token: string){
+
+        const result = await usersCollection.updateOne({email},
+            {$push: { blackListRefreshToken: token }})
 
         return !!result.matchedCount
     },

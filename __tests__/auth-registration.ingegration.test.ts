@@ -37,7 +37,8 @@ const registerUserMethod = authService.registerUser;
                 expirationDate:expect.any(Date),
                 isConfirmed:false
             },
-            _id: expect.any(ObjectId)
+            _id: expect.any(ObjectId),
+            blackListRefreshToken:[]
         })
     })
 

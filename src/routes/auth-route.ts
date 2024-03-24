@@ -51,12 +51,32 @@ authRoute.post('/login', postValidationAuth(), errorValidationBlogs, async (req:
 })
 
 
-authRoute.post('/refresh-token',(req: any, res: any) => {
+authRoute.post('/refresh-token',async (req: any, res: any) => {
+    try{
+        const refreshToken = req.cookies.refreshToken
 
-        const answer = req.cookies.refreshToken
-        res.status(STATUS_CODE.SUCCESS_200).send({"key":answer})
+        const userId =  await authService.checkRefreshToken(refreshToken)
 
-    }),
+        if (userId) {
+            const accessToken = await tokenJwtServise.createAccessTokenJwt(userId)
+            const answer = {"accessToken": accessToken}
+
+            const refreshToken=await tokenJwtServise.createRefreshTokenJwt(userId)
+
+            res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true,})
+            res.status(STATUS_CODE.SUCCESS_200).send(answer)
+
+        } else {
+            res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
+        }
+
+
+    } catch (error) {
+        console.log('auth-routes.ts /refresh-token' + error)
+        res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
+    }
+
+}),
 
 
 authRoute.get('/me', authTokenMiddleware, async (req: any, res: Response) => {
@@ -113,5 +133,28 @@ authRoute.post('/registration-email-resending',emailValidationUsers,isConfirmedF
     }
 })
 
+
+
+
+authRoute.post('/logout',async (req: any, res: any) => {
+    try{
+        const refreshToken = req.cookies.refreshToken
+
+        const userId =  await authService.checkRefreshToken(refreshToken)
+
+        if (userId) {
+            res.sendStatus(STATUS_CODE.NO_CONTENT_204)
+
+        } else {
+            res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
+        }
+
+
+    } catch (error) {
+        console.log('auth-routes.ts /logout' + error)
+        res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
+    }
+
+})
 
 

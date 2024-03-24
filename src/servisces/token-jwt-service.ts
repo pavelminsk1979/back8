@@ -27,5 +27,17 @@ export const tokenJwtServise = {
             console.log(' FILE token-jwt-service.ts' + error)
             return null
         }
-    }
+    },
+
+
+    async getUserIdByRefreshToken(refreshToken: string) {
+        try {
+            const result = await jwt.verify(refreshToken, settings.JWT_SECRET_RefreshTOKEN) as {userId:string}
+
+            return   result.userId
+        } catch (error) {
+            console.log(' FILE token-jwt-service.ts' + error)
+            return null
+        }
+    },
 }

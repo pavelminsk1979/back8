@@ -23,7 +23,8 @@ export const authService = {
                 confirmationCode: randomCode(),
                 expirationDate: add(new Date(), {hours: 1, minutes: 2}),
                 isConfirmed: false
-            }
+            },
+            blackListRefreshToken: []
         };
 
         await usersRepository.createUser(newUser)
@@ -91,8 +92,27 @@ export const authService = {
         if (!user) return false
 
         return user
-    }
+    },
 
+
+    async checkRefreshToken(token: string) {
+
+        const userId = await tokenJwtServise.getUserIdByRefreshToken(token)
+
+        if (!userId) return false
+
+        const user: any = await usersRepository.findUserWithAllPropetiesById(userId)
+
+        if (!user) return false
+
+        const isExistRefreshTokenInBlackList = user.blackListRefreshToken.includes(token)
+
+        if (isExistRefreshTokenInBlackList) return false
+
+        const result = await usersRepository.updateBlackListRefreshTokenForUser(user.email, token)
+
+        return userId
+    },
 
 
 }

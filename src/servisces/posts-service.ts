@@ -7,8 +7,6 @@ import {Comment, CommentatorInfo} from "../allTypes/commentTypes";
 import {commentsRepository} from "../repositories/comments/comments-repository";
 import {commentsQueryRepository} from "../repositories/comments/comments-query-repository";
 import {ResultCode} from "../common/object-result";
-import {ObjectId} from "mongodb";
-import {STATUS_CODE} from "../common/constant-status-code";
 
 
 

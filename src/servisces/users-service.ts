@@ -24,7 +24,8 @@ export const usersService = {
                 confirmationCode: randomCode(),
                 expirationDate: new Date(),
                 isConfirmed: true
-            }
+            },
+            blackListRefreshToken:[]
         }
 
         const result= await usersRepository.createUser(newUser)

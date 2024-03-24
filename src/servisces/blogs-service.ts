@@ -1,9 +1,7 @@
 import {CreateAndUpdateBlogModel} from "../models/CreateAndUpdateBlogModel";
-import {Blog, CreatePostFromCorrectBlogInputModel} from "../allTypes/blogTypes";
+import {Blog} from "../allTypes/blogTypes";
 import {blogsRepository} from "../repositories/blogs-repository-mongoDB";
-import {ParamBlogId} from "../allTypes/ParamBlogIdInputModel";
 import {blogQueryRepository} from "../repositories/blog-query-repository";
-import {STATUS_CODE} from "../common/constant-status-code";
 import {CreatePostInputModel, Post} from "../allTypes/postTypes";
 import {postsRepository} from "../repositories/posts-repository-mongoDB";
 import {postQueryRepository} from "../repositories/post-query-repository";
